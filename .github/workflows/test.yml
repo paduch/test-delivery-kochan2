@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: 'ubuntu-latest'
 
     steps:
@@ -22,3 +21,15 @@ jobs:
           path: |
               README.md 
               datum.txt
+
+  autodeploy:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - name: download artifact
+      uses: actions/download-artifact@v2
+        id: download
+        with:
+          name: etc
+    - name: display download files
+      run: ls -R
