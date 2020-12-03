@@ -1,4 +1,4 @@
-name: 'Test'
+name: 'Build'
 
 on: [push]
 
@@ -11,4 +11,14 @@ jobs:
     - name: 'Checkout'
       uses: 'actions/checkout@master'
     - name: 'Test'
-      run: 'echo "ok"'
+      run: |
+          echo "ok"
+          date > datum.txt
+    - name: archive artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: etc
+          retention-days: 1
+          path: |
+              README.md 
+              datum.txt
