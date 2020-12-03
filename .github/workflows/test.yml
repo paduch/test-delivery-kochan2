@@ -28,8 +28,7 @@ jobs:
     steps:
     - name: download artifact
       uses: actions/download-artifact@v2
-        id: download
-        with:
+      with:
           name: etc
     - name: display download files
       run: ls -R
