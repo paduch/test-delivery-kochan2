@@ -32,3 +32,9 @@ jobs:
           name: etc
     - name: display download files
       run: ls -R
+    - name: prepare deploy
+      uses: webfactory/ssh-agent@v0.4.1
+      with:
+          ssh-private-key: ${{ secrets.DEPLOY_TARGET_KEY }}
+    - name: deploy
+      run: rsync -avc -O --delete -e 'ssh -o StrictHostKeyChecking=no' --exclude="storage/logs" ./ ${DEPLOY_TARGET_USER}@${DEPLOY_TARGET_HOST}:test
