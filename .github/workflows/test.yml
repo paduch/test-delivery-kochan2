@@ -11,7 +11,7 @@ jobs:
       uses: 'actions/checkout@master'
     - name: 'Test'
       run: |
-          echo "ok"
+          echo "okay"
           date > datum.txt
     - name: archive artifact
       uses: actions/upload-artifact@v2
