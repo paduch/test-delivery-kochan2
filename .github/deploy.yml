@@ -6,3 +6,7 @@ staging:
   # Wait for our ci pipeline to pass.
   required_contexts: ["ci"]
   environment: staging
+
+prod:
+  environment: prod
+  production_environment: true
