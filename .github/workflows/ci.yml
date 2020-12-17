@@ -30,6 +30,7 @@ jobs:
       id: git_branch
       run: |
           commit=$(git log -1 --pretty=format:'%h')
+          git branch -a --contains $commit
           content=$(git branch -a --contains $commit | head -1 | tr -d '* ')
           echo "::set-output name=branch::$content"
 
