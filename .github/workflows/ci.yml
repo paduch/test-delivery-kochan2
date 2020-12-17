@@ -75,13 +75,12 @@ jobs:
           ls -al
       - name: edit wiki
         run: |
-          sed -i "" "s/^DATABOX\(.*\)/DATABOX: ${{ steps.get_message.outputs.data }}/" Home.md
+          sed -i.bak "s/^DATABOX\(.*\)/DATABOX: ${{ steps.get_message.outputs.data }}/" Home.md
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "update deployment info"
+          git commit -m "update deployment info" Home.md
       - name: Push changes to wiki repo
         uses: ad-m/github-push-action@master
         with:
