@@ -20,6 +20,18 @@ jobs:
           content="${content//$'\r'/'%0D'}"
           echo "::set-output name=log::$content"
 
+    - name: git commit message
+      id: git_msg
+      run: |
+          content=$(git log -1 --pretty=format:'- %h %s')
+          echo "::set-output name=msg::$content"
+
+    - name: git branch
+      id: git_branch
+      run: |
+          content=$(git branch | grep '^*' | tr -d '* ')
+          echo "::set-output name=branch::$content"
+
     - name: install, build, and test
       run: |
         echo 'ok'
@@ -28,7 +40,8 @@ jobs:
       id: create-issue
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: ${{ github.ref }}
+          BRANCH: ${{ steps.git_branch.outputs.branch }}
           GITLOG: ${{ steps.git_log.outputs.log }}
+          MESSAGE: ${{ steps.git_msg.outputs.msg }}
       with:
           filename: .github/ISSUE_TEMPLATE.md

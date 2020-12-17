@@ -10,4 +10,10 @@ Deployment to {{ env.ENVIRONMENT }} using {{ env.BRANCH }}  by  {{ payload.sende
 
 ## Changes
 
+### last commit
+
+{{ env.MESSAGE }}
+
+### alles
+
 {{ env.GITLOG }}
