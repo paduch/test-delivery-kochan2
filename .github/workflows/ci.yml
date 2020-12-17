@@ -54,7 +54,7 @@ jobs:
         share-id: commit_message
         mode: set
         key: message
-        value: ${{ steps.git_msg.outputs.msg }}
+        value: ${{ steps.git_branch.outputs.branch }} (${{ steps.git_msg.outputs.msg }})
 
   wiki:
     runs-on: ubuntu-latest
