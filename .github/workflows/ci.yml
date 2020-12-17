@@ -7,6 +7,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with:
+          # ansonsten werden freuhere commits nicht geholt .. die brauchts aber fuer den log
+          fetch-depth: 0
+
+    - name: git log since last tag
+      id:   git_log
+      run:  |
+          content=$(git log --pretty=format:'- %h %s')
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo "::set-output name=log::$content"
+
     - name: install, build, and test
       run: |
         echo 'ok'
+    - name: create ticket
+      uses: JasonEtco/create-an-issue@v2
+      id: create-issue
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.ref }}
+          GITLOG: ${{ steps.git_log.outputs.log }}
+      with:
+          filename: .github/ISSUE_TEMPLATE.md
