@@ -47,3 +47,42 @@ jobs:
           MESSAGE: ${{ steps.git_msg.outputs.msg }}
       with:
           filename: .github/ISSUE_TEMPLATE.md
+    - name: share commit info
+      id: set_upload_url
+      uses: noobly314/share-data@v1
+      with:
+        share-id: commit_message
+        mode: set
+        key: message
+        value: ${{ steps.git_msg.outputs.msg }}
+
+  wiki:
+    runs-on: ubuntu-latest
+    need: ci
+      - name: get message
+        id: get_message
+        uses: noobly314/share-data@v1
+        with:
+          share-id: commit_message
+          mode: get
+          key: message
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{github.repository}}.wiki    # specify the wiki repo name here.
+      - name: check wiki repo content
+        run: |
+          ls -al
+      - name: edit wiki
+        run: |
+          sed -i "" "s/^DATABOX\(.*\)/DATABOX: ${{ steps.get_message.outputs.data }}/" Home.md
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "update deployment info"
+      - name: Push changes to wiki repo
+        uses: ad-m/github-push-action@master
+        with:
+          repository: ${{github.repository}}.wiki    # specify the wiki repo and push the update.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
