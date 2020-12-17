@@ -48,7 +48,7 @@ jobs:
       with:
           filename: .github/ISSUE_TEMPLATE.md
     - name: share commit info
-      id: set_upload_url
+      id: set_message
       uses: noobly314/share-data@v1
       with:
         share-id: commit_message
@@ -59,6 +59,7 @@ jobs:
   wiki:
     runs-on: ubuntu-latest
     need: ci
+    steps:
       - name: get message
         id: get_message
         uses: noobly314/share-data@v1
