@@ -58,7 +58,7 @@ jobs:
 
   wiki:
     runs-on: ubuntu-latest
-    need: ci
+    needs: ci
     steps:
       - name: get message
         id: get_message
