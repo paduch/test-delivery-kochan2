@@ -14,7 +14,7 @@ jobs:
     - name: git log since last tag
       id:   git_log
       run:  |
-          content=$(git log --pretty=format:'- %h %s')
+          content=$(git log --pretty=format:'%h %s')
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
@@ -23,7 +23,7 @@ jobs:
     - name: git commit message
       id: git_msg
       run: |
-          content=$(git log -1 --pretty=format:'- %h %s')
+          content=$(git log -1 --pretty=format:'%h %s')
           echo "::set-output name=msg::$content"
 
     - name: git branch
@@ -34,6 +34,13 @@ jobs:
           content=$(git branch -a --contains $commit |tail -1 | sed 's/remotes\/origin\///')
           echo "::set-output name=branch::$content"
 
+    - name: current date
+      id: sysdate
+      run: |
+          content=$(date)
+          echo "::set-output name=sysdate::$content"
+
+    - name: git branch
     - name: install, build, and test
       run: |
         echo 'ok'
@@ -54,7 +61,7 @@ jobs:
         share-id: commit_message
         mode: set
         key: message
-        value: ${{ steps.git_branch.outputs.branch }} | ${{ steps.git_msg.outputs.msg }} | '21.12.2020'
+        value: ${{ steps.git_branch.outputs.branch }} | ${{ steps.git_msg.outputs.msg }} | ${{ steps.sysdate.outputs.sysdate }}
 
   wiki:
     runs-on: ubuntu-latest
