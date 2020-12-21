@@ -54,7 +54,7 @@ jobs:
         share-id: commit_message
         mode: set
         key: message
-        value: ${{ steps.git_branch.outputs.branch }} (${{ steps.git_msg.outputs.msg }})
+        value: ${{ steps.git_branch.outputs.branch }} | ${{ steps.git_msg.outputs.msg }} | '21.12.2020'
 
   wiki:
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
           ls -al
       - name: edit wiki
         run: |
-          sed -i.bak "s/^DATABOX\(.*\)/DATABOX: ${{ steps.get_message.outputs.data }}/" Home.md
+          sed -i.bak "s/^databox\(.*\)/databox| ${{ steps.get_message.outputs.data }}/" Home.md
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
