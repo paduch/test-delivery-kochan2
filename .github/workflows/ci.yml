@@ -40,10 +40,10 @@ jobs:
           content=$(date)
           echo "::set-output name=sysdate::$content"
 
-    - name: git branch
     - name: install, build, and test
       run: |
         echo 'ok'
+
     - name: create ticket
       uses: JasonEtco/create-an-issue@v2
       id: create-issue
